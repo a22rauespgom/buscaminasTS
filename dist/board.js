@@ -1,19 +1,12 @@
 import Cell from './cell.js';
-
 class Board {
-    rows: number;
-    columns: number;
-    cells: Cell[][];
-
-    constructor(rows: number, columns: number) {
+    constructor(rows, columns) {
         this.rows = rows;
         this.columns = columns;
         this.cells = [];
-
         this.create();
         this.calculateMinesAround();
     }
-
     create() {
         for (let i = 0; i < this.rows; i++) {
             this.cells[i] = [];
@@ -21,15 +14,12 @@ class Board {
                 this.cells[i][j] = new Cell(false);
             }
         }
-
         this.plantMines();
     }
-
     plantMines() {
         const totalCells = this.rows * this.columns;
         const totalMines = Math.floor(totalCells * 0.2);
-
-        const availableCells: { row: number, column: number }[] = [];
+        const availableCells = [];
         for (let i = 0; i < this.rows; i++) {
             for (let j = 0; j < this.columns; j++) {
                 if (!this.cells[i][j].isMine) {
@@ -37,7 +27,6 @@ class Board {
                 }
             }
         }
-
         for (let i = 0; i < totalMines; i++) {
             const randomIndex = Math.floor(Math.random() * availableCells.length);
             const { row, column } = availableCells[randomIndex];
@@ -45,7 +34,6 @@ class Board {
             availableCells.splice(randomIndex, 1);
         }
     }
-
     calculateMinesAround() {
         for (let i = 0; i < this.rows; i++) {
             for (let j = 0; j < this.columns; j++) {
@@ -53,8 +41,7 @@ class Board {
             }
         }
     }
-
-    countMinesAround(row: number, column: number): number {
+    countMinesAround(row, column) {
         let count = 0;
         for (let i = row - 1; i <= row + 1; i++) {
             for (let j = column - 1; j <= column + 1; j++) {
@@ -67,20 +54,17 @@ class Board {
         }
         return count;
     }
-
-    handleClick(cell: Cell, cellElement: HTMLElement, event: MouseEvent) {
-
-
+    handleClick(cell, cellElement, event) {
         if (event.button === 0 && !cell.marked) {
             if (cell.isMine) {
                 cellElement.children[0].setAttribute('src', 'img/mina.png');
                 cellElement.children[0].setAttribute('alt', 'Mine');
                 this.showAll();
-
                 setTimeout(() => {
                     alert('Game Over');
                 }, 10);
-            } else {
+            }
+            else {
                 cell.revealed = true;
                 cellElement.children[0].setAttribute('src', `img/Minesweeper_${cell.minesAround}.gif`);
                 cellElement.children[0].setAttribute('alt', cell.minesAround.toString());
@@ -88,41 +72,40 @@ class Board {
                     this.emptyArea(Number(cellElement.dataset.row), Number(cellElement.dataset.column));
                 }
             }
-        } else if (event.button === 2) {
+        }
+        else if (event.button === 2) {
             cell.marked = !cell.marked;
             if (cell.marked) {
                 cellElement.children[0].setAttribute('src', 'img/flag.png');
                 cellElement.children[0].setAttribute('alt', 'Flag');
-            } else {
+            }
+            else {
                 cellElement.children[0].setAttribute('src', 'img/square.gif');
                 cellElement.children[0].setAttribute('alt', 'Square');
             }
         }
-
         this.checkWin();
     }
-
     showAll() {
         for (let i = 0; i < this.rows; i++) {
             for (let j = 0; j < this.columns; j++) {
                 const cell = this.cells[i][j];
                 const cellElement = document.querySelector(`[data-row='${i}'][data-column='${j}']`);
                 if (cell.isMine) {
-                    cellElement?.children[0].setAttribute('src', 'img/mina.png');
-                    cellElement?.children[0].setAttribute('alt', 'Mine');
-                } else {
-                    cellElement?.children[0].setAttribute('src', `img/Minesweeper_${cell.minesAround}.gif`);
-                    cellElement?.children[0].setAttribute('alt', cell.minesAround.toString());
+                    cellElement === null || cellElement === void 0 ? void 0 : cellElement.children[0].setAttribute('src', 'img/mina.png');
+                    cellElement === null || cellElement === void 0 ? void 0 : cellElement.children[0].setAttribute('alt', 'Mine');
+                }
+                else {
+                    cellElement === null || cellElement === void 0 ? void 0 : cellElement.children[0].setAttribute('src', `img/Minesweeper_${cell.minesAround}.gif`);
+                    cellElement === null || cellElement === void 0 ? void 0 : cellElement.children[0].setAttribute('alt', cell.minesAround.toString());
                 }
             }
         }
     }
-
-    emptyArea(row: number, column: number, count: number = 0) {
+    emptyArea(row, column, count = 0) {
         if (count >= 2) {
             return;
         }
-
         for (let i = row - 1; i <= row + 1; i++) {
             for (let j = column - 1; j <= column + 1; j++) {
                 if (i >= 0 && i < this.rows && j >= 0 && j < this.columns) {
@@ -130,8 +113,8 @@ class Board {
                     const cellElement = document.querySelector(`[data-row='${i}'][data-column='${j}']`);
                     if (!cell.revealed && !cell.marked) {
                         cell.revealed = true;
-                        cellElement?.children[0].setAttribute('src', `img/Minesweeper_${cell.minesAround}.gif`);
-                        cellElement?.children[0].setAttribute('alt', cell.minesAround.toString());
+                        cellElement === null || cellElement === void 0 ? void 0 : cellElement.children[0].setAttribute('src', `img/Minesweeper_${cell.minesAround}.gif`);
+                        cellElement === null || cellElement === void 0 ? void 0 : cellElement.children[0].setAttribute('alt', cell.minesAround.toString());
                         if (cell.minesAround === 0) {
                             this.emptyArea(i, j, count + 1);
                         }
@@ -140,7 +123,6 @@ class Board {
             }
         }
     }
-
     checkWin() {
         let win = true;
         for (let i = 0; i < this.rows; i++) {
@@ -151,7 +133,6 @@ class Board {
                 }
             }
         }
-
         if (win) {
             setTimeout(() => {
                 alert('You win!');
@@ -159,5 +140,4 @@ class Board {
         }
     }
 }
-
 export default Board;
