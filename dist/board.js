@@ -28,7 +28,7 @@ class Board {
             }
         }
         for (let i = 0; i < totalMines; i++) {
-            const randomIndex = Math.floor(Math.random() * availableCells.length);
+            const randomIndex = crypto.getRandomValues(new Uint32Array(1))[0] % availableCells.length;
             const { row, column } = availableCells[randomIndex];
             this.cells[row][column].isMine = true;
             availableCells.splice(randomIndex, 1);
