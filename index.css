@@ -1,0 +1,14 @@
+.cell {
+    /* width: 30px; */
+    /* height: 30px; */
+    /* border: 1px solid black; */
+    display: inline-block;
+    text-align: center;
+    /* line-height: 30px; */
+    cursor: pointer;
+}
+
+.cell img {
+    width: 50px;
+    height: 50px;
+}
