@@ -1,3 +1,4 @@
 import Game from './game.js';
-const game = new Game(10, 10);
+const game = new Game(5, 5);
+
 game.drawBoard();
