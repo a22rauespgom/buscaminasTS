@@ -79,7 +79,7 @@ class Board {
 
                 setTimeout(() => {
                     alert('Game Over');
-                }, 10);
+                }, 100);
             } else {
                 cell.revealed = true;
                 cellElement.children[0].setAttribute('src', `img/Minesweeper_${cell.minesAround}.gif`);

@@ -62,7 +62,7 @@ class Board {
                 this.showAll();
                 setTimeout(() => {
                     alert('Game Over');
-                }, 10);
+                }, 100);
             }
             else {
                 cell.revealed = true;
